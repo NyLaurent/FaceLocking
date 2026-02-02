@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-02-01 18:14:16",
+  "embedding_dim": 512,
+  "names": [
+    "hackim",
+    "hackim2",
+    "lanez",
+    "lanez2"
+  ],
+  "samples_used": 7
+}
