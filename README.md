@@ -119,13 +119,14 @@ python -m src.enroll
 - Move slightly between captures
 
 **Controls:**
-| Key | Action |
-|-----|--------|
-| `SPACE` | Capture one sample |
-| `A` | Toggle auto-capture mode |
-| `S` | Save enrollment (requires 3+ samples) |
-| `R` | Reset new samples (keep existing) |
-| `Q` | Quit |
+
+| Key     | Action                                |
+| ------- | ------------------------------------- |
+| `SPACE` | Capture one sample                    |
+| `A`     | Toggle auto-capture mode              |
+| `S`     | Save enrollment (requires 3+ samples) |
+| `R`     | Reset new samples (keep existing)     |
+| `Q`     | Quit                                  |
 
 ---
 
@@ -145,12 +146,13 @@ python -m src.recognize
 - Real-time FPS counter
 
 **Controls:**
-| Key | Action |
-|-----|--------|
-| `Q` | Quit |
-| `R` | Reload database (refresh enrolled identities) |
-| `+` or `=` | Increase threshold (more accepts) |
-| `-` | Decrease threshold (stricter matching) |
+
+| Key        | Action                                        |
+| ---------- | --------------------------------------------- |
+| `Q`        | Quit                                          |
+| `R`        | Reload database (refresh enrolled identities) |
+| `+` or `=` | Increase threshold (more accepts)             |
+| `-`        | Decrease threshold (stricter matching)        |
 
 **Understanding the Distance:**
 
@@ -172,9 +174,9 @@ python -m src.lock
 **Interactive Steps:**
 
 1. **View enrolled identities** (displayed as a numbered list)
-2. **Enter the EXACT NAME** of the person to track
+2. **Enter the NUMBER or NAME** of the person to track
 
-   ⚠️ **IMPORTANT**: You must enter the **name**, not the number!
+   ✅ **Now accepts BOTH!**
 
    **Example:**
 
@@ -185,11 +187,12 @@ python -m src.lock
      3. lanez
      4. lanez2
 
-   Enter the name of the identity to lock (exact match): lanez
+   Enter the number or name of the identity to lock: 3
    ```
 
-   ✅ **Correct**: `lanez`  
-   ❌ **Wrong**: `3` (this will cause an error)
+   ✅ **Enter number**: `3`  
+   ✅ **Or enter name**: `lanez`  
+   Both work!
 
 3. **System locks** when the person appears on camera
 4. **Actions are tracked** and logged:
@@ -312,7 +315,7 @@ face-recognition-5pt/
 
 ### Common Issues
 
-#### ❌ **"Camera cannot be opened"**
+#### ❌ "Camera cannot be opened"
 
 **Solutions:**
 
@@ -321,7 +324,7 @@ face-recognition-5pt/
 - Ensure no other app is using the camera
 - Test with: `python -m src.camera`
 
-#### ❌ **"No face detected"**
+#### ❌ "No face detected"
 
 **Solutions:**
 
@@ -330,7 +333,7 @@ face-recognition-5pt/
 - Ensure face is fully visible
 - Lower `HAAR_MIN_SIZE` in `config.py`
 
-#### ❌ **"Model not found"**
+#### ❌ "Model not found"
 
 **Solution:**
 
@@ -338,7 +341,7 @@ face-recognition-5pt/
 python download_model.py
 ```
 
-#### ❌ **"No enrolled identities"**
+#### ❌ "No enrolled identities"
 
 **Solution:**
 
@@ -347,23 +350,7 @@ python -m src.enroll
 # Follow enrollment process
 ```
 
-#### ❌ **Face Lock Error: "'3' not in database"**
-
-**Problem:** You entered the number instead of the name.
-
-**Solution:** Enter the **EXACT NAME** as shown in the list:
-
-```
-Enrolled identities:
-  1. hackim
-  2. hackim2
-  3. lanez      ← Enter "lanez", not "3"
-  4. lanez2
-
-Enter the name of the identity to lock (exact match): lanez
-```
-
-#### ❌ **Too many false accepts (wrong people recognized)**
+#### ❌ Too many false accepts (wrong people recognized)
 
 **Solutions:**
 
@@ -371,7 +358,7 @@ Enter the name of the identity to lock (exact match): lanez
 - Edit `DEFAULT_DISTANCE_THRESHOLD` in `config.py` (try 0.28-0.32)
 - Re-enroll with more samples (20+)
 
-#### ❌ **Too many false rejects (correct people not recognized)**
+#### ❌ Too many false rejects (correct people not recognized)
 
 **Solutions:**
 
@@ -379,7 +366,7 @@ Enter the name of the identity to lock (exact match): lanez
 - Edit `DEFAULT_DISTANCE_THRESHOLD` in `config.py` (try 0.36-0.40)
 - Enroll with varied expressions and angles
 
-#### ❌ **Low FPS / Laggy performance**
+#### ❌ Low FPS / Laggy performance
 
 **Solutions:**
 
@@ -388,7 +375,7 @@ Enter the name of the identity to lock (exact match): lanez
 - Use a computer with better CPU/GPU
 - Expected FPS: 8-12 (normal for this pipeline)
 
-#### ❌ **Actions not detected in Face Lock**
+#### ❌ Actions not detected in Face Lock
 
 **Solutions:**
 
@@ -564,5 +551,3 @@ Educational use only. Not intended for commercial deployment without proper secu
 7. 📊 Optimize performance for your hardware
 
 **Happy Face Recognizing! 👤🔍**
-#   F a c e L o c k i n g  
- 
