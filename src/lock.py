@@ -215,6 +215,8 @@ def main():
                     dists = np.array([cosine_distance(query_emb, embeddings_matrix[i]) for i in range(len(names))])
                     best_idx = int(np.argmin(dists))
                     best_dist = dists[best_idx]
+                    
+                    # Check if this is the lock target
                     if best_idx == lock_idx and best_dist <= threshold:
                         locked = True
                         fail_count = 0
@@ -231,6 +233,19 @@ def main():
                         baseline_mouth_width = None
                         print("LOCKED onto", lock_identity, "Recording to", history_path.name)
                         break
+                    
+                    # Recognize other enrolled people while searching for lock target
+                    if best_dist <= threshold:
+                        name = names[best_idx]
+                        color = (255, 165, 0)  # Orange for other enrolled people
+                        cv2.rectangle(vis, (face.x1, face.y1), (face.x2, face.y2), color, 2)
+                        cv2.putText(vis, f"{name} ({best_dist:.3f})", (face.x1, face.y1 - 5), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
+                    else:
+                        # Unknown person
+                        cv2.rectangle(vis, (face.x1, face.y1), (face.x2, face.y2), (128, 128, 128), 2)
+                        cv2.putText(vis, "Unknown", (face.x1, face.y1 - 5), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (128, 128, 128), 1)
 
             else:
                 matched_face = None
@@ -300,16 +315,33 @@ def main():
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 1)
 
             if locked:
+                # Recognize other enrolled faces in the frame
                 for face in faces:
                     cx = (face.x1 + face.x2) / 2.0
+                    # Skip if this is the locked face
                     if prev_center_x is not None and abs(cx - prev_center_x) < 50:
                         continue
-                    cv2.rectangle(vis, (face.x1, face.y1), (face.x2, face.y2), (0, 0, 255), 2)
-                    cv2.putText(vis, "Other", (face.x1, face.y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 1)
-            else:
-                for face in faces:
-                    cv2.rectangle(vis, (face.x1, face.y1), (face.x2, face.y2), (0, 255, 0), 2)
-                    cv2.putText(vis, "Looking for lock...", (face.x1, face.y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (200, 200, 200), 1)
+                    
+                    # Try to recognize this face
+                    aligned, _ = aligner.align(frame, face.landmarks)
+                    query_emb, _ = embedder.embed(aligned)
+                    dists = np.array([cosine_distance(query_emb, embeddings_matrix[i]) for i in range(len(names))])
+                    best_idx = int(np.argmin(dists))
+                    best_dist = dists[best_idx]
+                    
+                    # Check if it's an enrolled person
+                    if best_dist <= threshold:
+                        name = names[best_idx]
+                        color = (255, 165, 0)  # Orange for other enrolled people
+                        cv2.rectangle(vis, (face.x1, face.y1), (face.x2, face.y2), color, 2)
+                        cv2.putText(vis, f"{name} ({best_dist:.3f})", (face.x1, face.y1 - 5), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
+                    else:
+                        # Unknown person
+                        cv2.rectangle(vis, (face.x1, face.y1), (face.x2, face.y2), (0, 0, 255), 2)
+                        cv2.putText(vis, "Unknown", (face.x1, face.y1 - 5), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 1)
+
 
             header = "Lock target: " + lock_identity + " | " + ("LOCKED" if locked else "Searching...") + " | FPS: %.1f" % fps
             cv2.putText(vis, header, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)

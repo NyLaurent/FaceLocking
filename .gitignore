@@ -29,7 +29,6 @@ wheels/
 *.egg
 
 # IDE
-.vscode/
 .idea/
 *.swp
 *.swo
@@ -54,3 +53,5 @@ buffalo_l.zip
 # OS
 .DS_Store
 Thumbs.db
+config.bat
+node_modules
