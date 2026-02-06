@@ -1,0 +1,9 @@
+# Face Lock history: lanez
+# Started: 2026-02-06 11:59:34
+# Format: timestamp  action_type  description
+# ---
+1770400775.76  eye_blink  eye blink
+1770400776.24  face_moved_left  face moved left
+1770400777.65  face_moved_right  face moved right
+1770400778.13  face_moved_left  face moved left
+1770400782.69  eye_blink  eye blink

@@ -1,0 +1,8 @@
+# Face Lock history: lanez
+# Started: 2026-02-06 11:34:54
+# Format: timestamp  action_type  description
+# ---
+1770399297.95  face_moved_right  face moved right
+1770399308.26  face_moved_right  face moved right
+1770399310.12  face_moved_left  face moved left
+1770399310.52  smile  smile or laugh
